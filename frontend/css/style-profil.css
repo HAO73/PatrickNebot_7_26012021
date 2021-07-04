@@ -1,0 +1,156 @@
+
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+
+}
+body  {
+    font-family: 'Open Sans', sans-serif;
+    text-align: center;
+    
+}
+nav {
+   
+    color: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+nav .mainMenu {
+    display: flex;
+    list-style: none;
+}
+nav .mainMenu li a {
+    position: relative;
+    display: inline-block;
+    padding: 15px;
+    text-decoration: none;
+    right:-30rem;
+    color: black;
+    font-size: 3rem;
+    font-weight: bold;
+}
+nav .mainMenu li a:hover {
+    background: rgb(255,94,0);
+}
+nav .openMenu {
+    font-size: 2rem;
+    margin: 20px;
+    display: none;
+    cursor: pointer;
+}
+nav .mainMenu .closeMenu , .icons i {
+    font-size: 2rem;
+    display: none;
+    cursor: pointer;
+    
+}
+
+.img-responsive {
+
+    position: relative;
+    right:-10rem;
+    background-image: cover;
+    max-width: 100%;
+    height:auto;
+
+
+}
+
+#containerProfil {
+
+   font-size: 3rem;
+
+
+}
+
+
+#containerProfil button {
+
+    width: 17rem;
+    height: 3rem;
+    margin: 2rem;
+    background-color:white;
+    border-radius: 16px;
+    font-size:1.5rem;
+    font-weight:bold;
+
+}
+
+#containerProfil button:hover{
+
+    background-color: rgb(255,94,0);
+
+
+} 
+
+input {
+
+    font-size:3rem;
+    margin:2rem;
+
+}
+
+#bio{
+
+    height:25rem;
+    word-wrap: break-word
+
+
+
+
+}
+
+
+
+
+@media(max-width: 800px){
+    nav .mainMenu {
+        height: 100vh;
+        position: fixed;
+        top: 0;
+        right: 0;
+        left: 0;
+        z-index: 10;
+        flex-direction: column;
+        
+        align-items: center;
+        background:white;
+        transition: top 1s ease;
+        display: none;
+    }
+    nav .mainMenu .closeMenu {
+        display: block;
+        position: absolute;
+        top: 20px;
+        right: 20px;
+
+    }
+    nav .openMenu {
+        display: block;
+    }
+    nav .mainMenu li a:hover {
+        background: none;
+        color: rgb(255, 123, 0);
+        font-size: 1.6rem;
+    }
+    .icons i {
+        display: inline-block;
+        padding: 12px;
+    }
+
+    .img-responsive{
+
+        right: 0rem;
+
+    }
+
+    nav .mainMenu li a{
+
+        right:0rem;
+        font-size: 2rem;
+
+    }
+}
