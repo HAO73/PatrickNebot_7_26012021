@@ -45,7 +45,7 @@ const inscription ={
 fetch("http://localhost:8080/api/users/register", inscription)
     .then(function(response){
         if (response.ok) {
-            window.location.href="forum.html"
+            window.location.href="index.html"
         }  
                   
         return response.json();

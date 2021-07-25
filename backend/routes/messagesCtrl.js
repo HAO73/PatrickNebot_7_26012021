@@ -59,7 +59,7 @@ module.exports = {
               content: content,
               attachment: 0,
               likes: 0,
-              UserId: userFound.id
+              userId: userFound.id
             })
               .then(function (newMessage) {
                 done(newMessage);
@@ -72,7 +72,7 @@ module.exports = {
               content: content,
               attachment: `${req.protocol}://${req.get('host')}/images/${req.file.filename}`,
               likes: 0,
-              UserId: userFound.id
+              userId: userFound.id
             })
               .then(function (newMessage) {
                 done(newMessage);
@@ -157,7 +157,7 @@ module.exports = {
             })
 
             models.Message.destroy({
-              attributes: ['title', 'content', 'attachment'],
+              attributes: ['title', 'content','attachment'],
               where: { id: req.params.id }
             }).then(function (mess) {
               if (mess) {
@@ -169,7 +169,7 @@ module.exports = {
               res.status(500).json({ 'error': 'cannot fetch message' });
             })
 
-          })
+          }) 
 
       }
 

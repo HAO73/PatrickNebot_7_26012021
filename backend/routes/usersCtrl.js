@@ -221,8 +221,9 @@ register: function(req,res){
 
 
     models.User.destroy({
-        attributes: ['id', 'phone', 'username'],
+        attributes: ['id'],
         where: { id: userId }
+
 }).then(function (user) {
     if (user) {
         res.status(201).json({"success": "Utilisateur supprimé"});
@@ -230,6 +231,7 @@ register: function(req,res){
         res.status(404).json({ 'error': 'Utilisateur non trouvé' });
     }
 }).catch(function (err) {
+    console.log(err);
     res.status(500).json({ 'error': 'cannot fetch user' });
 });
 }

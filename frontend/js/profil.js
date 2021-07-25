@@ -71,8 +71,8 @@ fetch("http://localhost:8080/api/users/me", getProfil)
      <form>
     <label>Username:</label>
     <span>${response.username}</span><br>
-     <label>Bio:</label>
-     <input id="bio" type="text"></input><br>
+     <label>Bio:</label><br>
+     <textarea id="bio" type="text"></textarea><br>
      <button class="updateProfil">Enregistrer</button><br>
      </form>
     `
