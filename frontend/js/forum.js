@@ -116,51 +116,73 @@ sendMessage.addEventListener('click', function (event) {
 })
 
 
-////Affichage Messages
 
+////Affichage Messages
 
 fetch("http://localhost:8080/api/messages/?order=id:DESC")
     .then(function (httpBodyResponse) {
         return httpBodyResponse.json()
     })
     .then(function (messages) {
+
         let containerMessages = document.querySelector(".containerMessages");
         let MessagesArray = [];
-
-
-
-
 
         for (i = 0; i < messages.length; i++) {
 
             let checkLocalStorage = JSON.parse(localStorage.getItem("username"));
 
 
+            //Affichage Comments
+            let comments
+            let commentsArray = []
+
+            for (j = 0; j < messages[i].Comments.length; j++) {
+
+                if (messages[i].Comments[j].userId === checkLocalStorage.userId || checkLocalStorage.isAdmin) {
+
+                    commentsArray = commentsArray + `<div class="commentNumber">
+                  <span class="commentUsername">${messages[i].Comments[j].username}</span>
+                  <p class=""commentPosted">${messages[i].Comments[j].content}</p>
+                  <button class="eraseComment" value="${messages[i].Comments[j].id}"><i class="far fa-trash-alt"></i></button>
+                 </div>   `
+
+
+
+
+                } else {
+
+                    commentsArray = commentsArray + ` <div class="commentNumber">
+                <span class="commentUsername">${messages[i].Comments[j].username}</span>
+                <p class=""commentPosted">${messages[i].Comments[j].content}</p>    
+                </div>`
+                }
+
+
+                comments = commentsArray
+            }
+
+
 
             if (messages[i].attachment == 0) {
 
-
-
                 if (messages[i].userId === checkLocalStorage.userId || checkLocalStorage.isAdmin) {
-
-
 
                     MessagesArray = MessagesArray + `
                      <div class="encart" >
                      <span id="username">${messages[i].User.username}</span><br>
                      <span id="title">${messages[i].title}</span><br>
-                     
-                    
-                    <p id="message">${messages[i].content}</p><br>
+                     <p id="message">${messages[i].content}</p><br>
                      <button class="eraseMessage" value="${messages[i].id}"><i class="far fa-trash-alt"></i></button>
                     </div>
-                    <div class="containerComments"></div>
+                    <div class="containerComments" value="${messages[i].id}">${comments ? comments : ""}
+                    </div>  
                     <div id="encartComment">
                     <textarea class="comments" placeholder="Commentaires"></textarea>
-                    <button class="validComment"value="${messages[i].id}">Post</button>                  
-                    
+                    <button class="validComment" value="${messages[i].id}">Post</button>                  
                     </div>
-                  `
+
+                    `
 
                 } else {
 
@@ -173,19 +195,25 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
                  
                      <p id="message">${messages[i].content}</p><br>
                      </div>
-                     <div class="containerComments"></div>
+                     <div class="containerComments" value="${messages[i].id}">
+                     ${comments ? comments : ""}
+                     </div>
                      <div id="encartComment">
 
                      <textarea class="comments" placeholder="Commentaires"></textarea>
                      <button class="validComment" value="${messages[i].id}">Post</button>                     
                      
                      </div>
+ 
                      `
 
                 }
+
             } else {
 
                 if (messages[i].userId === checkLocalStorage.userId || checkLocalStorage.isAdmin) {
+
+
 
                     MessagesArray = MessagesArray + `
                      <div class="encart" >
@@ -194,18 +222,25 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
                      <span id="title">${messages[i].title}</span><br>
                     <img id="imagePost" src="${messages[i].attachment}"/><br>
                      <p id="message">${messages[i].content}</p><br>
-                     <button class="eraseMessage"><i class="far fa-trash-alt"></i></button>
+                     <button class="eraseMessage" value="${messages[i].id}"><i class="far fa-trash-alt"></i></button>
                      </div>
-                     <div class="containerComments"></div>
+                     <div class="containerComments" value="${messages[i].id}">
+                     ${comments ? comments : ""}
+                     </div>
                      <div id="encartComment">
                      <textarea class="comments" placeholder="Commentaires"></textarea>
                      <button class="validComment" value="${messages[i].id}">Post</button>                    
                      
                      </div>
                     
+
+                     
+
                    `
 
                 } else {
+
+
                     MessagesArray = MessagesArray + `
                  <div class="encart">
                 
@@ -215,16 +250,23 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
                  <img id="imagePost" src="${messages[i].attachment}" /><br>
                  <p id="message">${messages[i].content}</p><br>
                  </div>
-                 <div class="containerComments"></div>
+                 <div class="containerComments" value="${messages[i].id}">
+                 ${comments ? comments : ""}
+                 </div>
                  <div id="encartComment">
                  <textarea class="comments" placeholder="Commentaires"></textarea>
                  <button class="validComment" value="${messages[i].id}">Post</button>                    
                  
                  </div>
                 
+
+                
+
                 `
 
                 }
+
+
 
             };
 
@@ -235,15 +277,10 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
             containerMessages.innerHTML = MessagesArray;
         }
 
-       
-
 
         ////Suppression Message
 
         let eraseMessage = document.querySelectorAll(".eraseMessage");
-        let eraseMessageId = document.querySelector(".eraseMessage").value;
-
-
 
 
         for (let j = 0; j < eraseMessage.length; j++) {
@@ -268,11 +305,11 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
 
                 }
 
-                fetch(`http://localhost:8080/api/messages/${eraseMessageId}`, deleteMessage)
+                fetch(`http://localhost:8080/api/messages/${eraseMessage[j].value}`, deleteMessage)
                     .then(response => response.json())
                     .then(response => {
 
-                        window.location.href = "forum.html" 
+                        window.location.href = "forum.html"
 
                     })
 
@@ -284,10 +321,14 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
 
         //// Post Comment
 
+
+
         let commentPost = document.querySelectorAll(".validComment");
-        
-        console.log(commentPost)
-        
+        let content = document.querySelectorAll(".comments");
+        let messageId = document.querySelectorAll(".validComment");
+
+
+
         for (let k = 0; k < commentPost.length; k++) {
 
 
@@ -296,21 +337,24 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
 
                 event.preventDefault();
 
-                let content = document.querySelector(".comments").value;
-                let messageId = document.querySelector(".validComment").value;
+                content = content[k].value
+                messageId = messageId[k].value
+
+
                 let checkLocalStorage = JSON.parse(localStorage.getItem("username"));
                 let username = checkLocalStorage.username
-               
+
+
 
                 let envoiComment = {
 
                     content: content,
                     messageId: messageId,
-                    username:username
+                    username: username
 
                 }
 
-                console.log(envoiComment);
+
 
                 const postCommentJSON = {
 
@@ -332,7 +376,7 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
                     .then(response => response.json())
                     .then(response => {
 
-                        // window.location.href = "forum.html"
+                        window.location.href = "forum.html"
 
                     })
 
@@ -345,65 +389,50 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
         }
 
 
-        //Affichage Comments
+        ////Suppression Comment
 
-        fetch("http://localhost:8080/api/comments/?order=id:DESC")
-        .then(function (httpBodyResponse) {
-        return httpBodyResponse.json()
-    })
-        .then(function (comments) {
-        let containerComments = document.querySelector(".containerComments");
-        let commentsArray = [];
-
-        for (l = 0; l < comments.length;l++) {
-
-            let checkLocalStorage = JSON.parse(localStorage.getItem("username"));
-
-            if (comments[l].userId === checkLocalStorage.userId || checkLocalStorage.isAdmin) {
-                commentsArray= commentsArray + `
-                
-                <span>${comments[l].username}</span>
-                <textarea>${comments[l].content}</textarea>
-                <button class="eraseComment"><i class="far fa-trash-alt"></i></button>
-                
-                
-                `
+        let eraseComment = document.querySelectorAll(".eraseComment");
 
 
-            }else{
+        for (let p = 0; p < eraseComment.length; p++) {
 
-                commentsArray= commentsArray + `
-                
-                <span>${comments[l].username}</span>
-                <textarea>${comments[l].content}</textarea>    
+            eraseComment[p].addEventListener("click", function (event) {
+                let checkLocalStorage = JSON.parse(localStorage.getItem("username"));
+                event.preventDefault();
+                event.stopPropagation();
 
-               
-                `
+                let deleteComment = {
 
-            }   
+                    method: "delete",
+                    headers: {
 
-      
+                        'Content-Type': 'application/json',
+                        'Authorization': checkLocalStorage.token
 
-         
+                    },
+
+                    mode: 'cors',
+                    cache: 'default'
+
+                }
+
+                fetch(`http://localhost:8080/api/comments/${eraseComment[p].value}`, deleteComment)
+                    .then(response => response.json())
+                    .then(response => {
+
+                        window.location.href = "forum.html"
+
+                    })
+
+                    .catch(error => alert("Erreur : " + error));
+            })
 
         }
 
-        if (l === comments.length) {
-            containerComments.innerHTML = commentsArray;
-        }
-
-       
-
-
-
-    })        
-    .catch(error => alert("Erreur : " + error));
-
     })
+
+
     .catch(error => alert("Erreur : " + error));
-
-
-  
 
 
 function deconnexion() {
@@ -414,4 +443,13 @@ function deconnexion() {
 
 
 }
+
+
+
+
+
+
+
+
+
 

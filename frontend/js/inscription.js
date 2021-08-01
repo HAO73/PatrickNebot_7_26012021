@@ -51,16 +51,17 @@ fetch("http://localhost:8080/api/users/register", inscription)
         return response.json();
 
     })
+    
+
     .then (response => {
-        alert(JSON.stringify(response))
+          alert(JSON.stringify(response))
 
     })
-      
+    .catch(error =>alert("Erreur:" + error));  
 
        
         //localStorage.setItem("username", JSON.stringify(profil.username));
      
     
-    .catch(error =>alert("Erreur:" + error));
-
+    
 });

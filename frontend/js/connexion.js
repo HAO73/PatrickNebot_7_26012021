@@ -31,7 +31,7 @@ formLogin.addEventListener('click', function (event){
         .then(function(response){
                 if (response.ok) {
                     window.location.href="forum.html"
-                }  
+                } 
                         
                 return response.json();
 

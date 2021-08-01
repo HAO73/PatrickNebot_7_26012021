@@ -110,7 +110,14 @@ module.exports = {
       include: [{
         model: models.User,
         attributes: ['username']
-      }]
+       },
+      {
+        model:models.Comment,
+        attributes: ["id",'content','username',"userId"]
+
+
+      }
+    ]
     }).then(function (messages) {
       if (messages) {
         res.status(200).json(messages);
@@ -146,7 +153,7 @@ module.exports = {
           where: { id: req.params.id }
         })
           .then(mess => {
-
+            if(mess.attachment){
             const filename = mess.attachment.split('/images/')[1];
             fs.unlink(`images/${filename}`, (err) => {
               if (err) {
@@ -155,7 +162,7 @@ module.exports = {
                 console.log('successfully deleted local image');
               }
             })
-
+          }else{}
             models.Message.destroy({
               attributes: ['title', 'content','attachment'],
               where: { id: req.params.id }

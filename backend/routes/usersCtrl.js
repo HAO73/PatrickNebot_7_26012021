@@ -174,8 +174,18 @@ register: function(req,res){
     var headerAuth  = req.headers['authorization'];
     var userId      = jwtUtils.getUserId(headerAuth);
 
+    
     // Params
     var bio = req.body.bio;
+    var password = req.body.password;
+
+    if(!PASSWORD_REGEX.test(password)){
+
+      return res.status(400).json({'error':'password invalid (must length 4-8 and include 1 uppercase letter, 1 lowercase letter, and 1 number)'})
+
+    }
+
+   
 
     asyncLib.waterfall([
       function(done) {
@@ -190,21 +200,26 @@ register: function(req,res){
         });
       },
       function(userFound, done) {
+          
         if(userFound) {
+          bcrypt.hash(password, 5, function( err, bcryptedPassword ) {   
           userFound.update({
-            bio: (bio ? bio : userFound.bio)
+            bio: (bio ? bio : userFound.bio),
+            password: (password ? bcryptedPassword : userFound.password)
           }).then(function() {
             done(userFound);
           }).catch(function(err) {
             res.status(500).json({ 'error': 'cannot update user' });
           });
+        })
         } else {
           res.status(404).json({ 'error': 'user not found' });
-        }
+        } 
+      
       },
     ], function(userFound) {
       if (userFound) {
-        return res.status(201).json(userFound);
+        return res.status(201).json({'ok':'Profil updated'});
       } else {
         return res.status(500).json({ 'error': 'cannot update user profile' });
       }

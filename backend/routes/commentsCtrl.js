@@ -68,6 +68,46 @@ module.exports = {
         }
       });
     },
+
+    listCommentsMessage : function(req, res, next) {
+      models.Comment.findAll({
+        where: {
+          messageId: req.params.id,
+        },
+        order: [["updatedAt", "DESC"]],
+        include: [
+          {
+            model: models.User,
+            attributes: ["username"],
+          },
+          {
+            model:models.Message,
+            attributes:["content"]
+
+
+          }
+
+
+
+        ],
+      })
+        .then((comments) => {
+          res.status(200).json(comments);
+        })
+        .catch((error) => {
+          res.status(400).json({
+            error: error,
+          });
+        });
+    } 
+    ,
+
+
+
+
+
+
+
     listComments: function (req, res) {
       var fields = req.query.fields;
       var limit = parseInt(req.query.limit);
@@ -79,7 +119,7 @@ module.exports = {
       }
   
       models.Comment.findAll({
-        // order: [(order != null) ? order.split(':') : ['ASC']],
+        order: [(order != null) ? order.split(':') : ['ASC']],
         attributes: (fields !== '*' && fields != null) ? fields.split(',') : null,
         limit: (!isNaN(limit)) ? limit : null,
         offset: (!isNaN(offset)) ? offset : null,

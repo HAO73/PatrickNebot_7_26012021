@@ -22,8 +22,6 @@ const containerProfil = document.getElementById("containerProfil");
 
 let checkLocalStorage = JSON.parse(localStorage.getItem("username"));
 
-console.log(checkLocalStorage)
-
 ////Requête Profil
 
 const getProfil = {
@@ -43,7 +41,7 @@ const getProfil = {
 
 }
 
-console.log(getProfil)
+
 
 fetch("http://localhost:8080/api/users/me", getProfil)
     .then(response => response.json())
@@ -71,8 +69,10 @@ fetch("http://localhost:8080/api/users/me", getProfil)
      <form>
     <label>Username:</label>
     <span>${response.username}</span><br>
-     <label>Bio:</label><br>
+     <label>Update Bio:</label><br>
      <textarea id="bio" type="text"></textarea><br>
+     <label>Update Password:</label><br>
+     <input id="password" type="text"></textarea><br>
      <button class="updateProfil">Enregistrer</button><br>
      </form>
     `
@@ -89,9 +89,12 @@ fetch("http://localhost:8080/api/users/me", getProfil)
                 event.preventDefault();
 
                 let bio = document.getElementById("bio").value;
+                let password = document.getElementById("password").value;
 
-                let updateBio = {
-                    bio: bio
+                let updateBioPass = {
+                    bio: bio,
+                    password: password,
+
                 }
 
                 const putProfil = {
@@ -101,19 +104,28 @@ fetch("http://localhost:8080/api/users/me", getProfil)
                         'Content-Type': 'application/json',
                         'Authorization': checkLocalStorage.token
                     },
-                    body: JSON.stringify(updateBio),
+                    body: JSON.stringify(updateBioPass),
                     mode: 'cors',
                     cache: 'default'
                 }
 
                 fetch("http://localhost:8080/api/users/me", putProfil)
+                    
                     .then(response => response.json())
+                   
                     .then(response => {
-                        window.location.href = "profil.html"
-                    })
-                    .catch(error => alert("Erreur : " + error));
-            })
 
+                        
+                        window.location.href = "profil.html"
+                             
+                        alert(JSON.stringify(response))
+                        
+                         
+                    
+                    
+                    })
+                    .catch(error => alert("Erreur : " + error))
+            })
 
         })
 
