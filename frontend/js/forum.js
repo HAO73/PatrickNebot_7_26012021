@@ -144,7 +144,7 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
                     commentsArray = commentsArray + `<div class="commentNumber">
                   <span class="commentUsername">${messages[i].Comments[j].username}</span>
                   <p class=""commentPosted">${messages[i].Comments[j].content}</p>
-                  <button class="eraseComment" value="${messages[i].Comments[j].id}"><i class="far fa-trash-alt"></i></button>
+                  <button class="eraseComment" title="eraseComment" value="${messages[i].Comments[j].id}"><i class="far fa-trash-alt"></i></button>
                  </div>   `
 
 
@@ -173,7 +173,7 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
                      <span id="username">${messages[i].User.username}</span><br>
                      <span id="title">${messages[i].title}</span><br>
                      <p id="message">${messages[i].content}</p><br>
-                     <button class="eraseMessage" value="${messages[i].id}"><i class="far fa-trash-alt"></i></button>
+                     <button class="eraseMessage" title="eraseMessage" value="${messages[i].id}"><i class="far fa-trash-alt"></i></button>
                     </div>
                     <div class="containerComments" value="${messages[i].id}">${comments ? comments : ""}
                     </div>  
@@ -220,9 +220,9 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
                     
                      <span id="username">${messages[i].User.username}</span><br>
                      <span id="title">${messages[i].title}</span><br>
-                    <img id="imagePost" src="${messages[i].attachment}"/><br>
+                    <img id="imagePost" src="${messages[i].attachment}" alt="Image${messages[i].id}"/><br>
                      <p id="message">${messages[i].content}</p><br>
-                     <button class="eraseMessage" value="${messages[i].id}"><i class="far fa-trash-alt"></i></button>
+                     <button class="eraseMessage" title="eraseMessage" value="${messages[i].id}"><i class="far fa-trash-alt"></i></button>
                      </div>
                      <div class="containerComments" value="${messages[i].id}">
                      ${comments ? comments : ""}
@@ -247,7 +247,7 @@ fetch("http://localhost:8080/api/messages/?order=id:DESC")
                  <span id="username">${messages[i].User.username}</span><br>
              <span id="title">${messages[i].title}</span><br>
                 
-                 <img id="imagePost" src="${messages[i].attachment}" /><br>
+                 <img id="imagePost" src="${messages[i].attachment}" alt="Image${messages[i].id}" /><br>
                  <p id="message">${messages[i].content}</p><br>
                  </div>
                  <div class="containerComments" value="${messages[i].id}">
