@@ -28,4 +28,4 @@ TOKEN_KEY="*clé de chiffrement pour JsonWebToken*"
 
 À la racine du dossier backend, faites un npm install
 
-Faites un node server ou nodemon server (node recquis pour cette aplication)
+Faites un node server ou nodemon server (node requis pour cette aplication)
