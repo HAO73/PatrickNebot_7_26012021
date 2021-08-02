@@ -110,19 +110,19 @@ fetch("http://localhost:8080/api/users/me", getProfil)
                 }
 
                 fetch("http://localhost:8080/api/users/me", putProfil)
-                    
+
                     .then(response => response.json())
-                   
+
                     .then(response => {
 
-                        
+
                         window.location.href = "profil.html"
-                             
+
                         alert(JSON.stringify(response))
-                        
-                         
-                    
-                    
+
+
+
+
                     })
                     .catch(error => alert("Erreur : " + error))
             })

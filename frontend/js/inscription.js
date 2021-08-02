@@ -12,7 +12,7 @@ formSignup.addEventListener('click', function (event) {
     let password = document.getElementById('password').value;
     let bio = document.getElementById('bio').value;
 
-    let profil ={
+    let profil = {
 
         email: email,
         username: username,
@@ -21,47 +21,47 @@ formSignup.addEventListener('click', function (event) {
 
     };
 
-   
 
-//////Envoi du formulaire au backend
 
-const inscription ={
+    //////Envoi du formulaire au backend
 
-        method:'POST',
+    const inscription = {
+
+        method: 'POST',
         headers: {
 
             'Content-Type': 'application/json'
 
         },
 
-        body: JSON.stringify (profil),
+        body: JSON.stringify(profil),
         mode: 'cors',
         cache: 'default'
 
-};
+    };
 
 
 
-fetch("http://localhost:8080/api/users/register", inscription)
-    .then(function(response){
-        if (response.ok) {
-            window.location.href="index.html"
-        }  
-                  
-        return response.json();
+    fetch("http://localhost:8080/api/users/register", inscription)
+        .then(function (response) {
+            if (response.ok) {
+                window.location.href = "index.html"
+            }
 
-    })
-    
+            return response.json();
 
-    .then (response => {
-          alert(JSON.stringify(response))
+        })
 
-    })
-    .catch(error =>alert("Erreur:" + error));  
 
-       
-        //localStorage.setItem("username", JSON.stringify(profil.username));
-     
-    
-    
+        .then(response => {
+            alert(JSON.stringify(response))
+
+        })
+        .catch(error => alert("Erreur:" + error));
+
+
+   
+
+
+
 });
