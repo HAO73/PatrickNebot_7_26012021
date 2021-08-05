@@ -1,4 +1,4 @@
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcryptjs');
 var jwtUtils = require('../utils/jwt.utils');
 var models = require('../models');
 var asyncLib = require('async')
@@ -60,10 +60,13 @@ module.exports = {
       },
       function (userFound, done) {
         if (!userFound) {
-          bcrypt.hash(password, 5, function (err, bcryptedPassword) {
-            done(null, userFound, bcryptedPassword);
+
+            bcrypt.genSalt(5, function(err, salt) {
+            bcrypt.hash("B4c0/\/", salt, function(err, bcryptedPassword) {
+              done(null, userFound, bcryptedPassword);
+            });
           });
-        } else {
+         } else {
           return res.status(409).json({ 'error': 'user already exist' });
         }
       },
@@ -117,8 +120,10 @@ module.exports = {
       },
       function (userFound, done) {
         if (userFound) {
-          bcrypt.compare(password, userFound.password, function (errBycrypt, resBycrypt) {
+
+          bcrypt.compare("B4c0/\/", userFound.password, function(errBycrypt, resBycrypt) {
             done(null, userFound, resBycrypt);
+          
           });
         } else {
           return res.status(404).json({ 'error': 'user not exist in DB' });
@@ -202,7 +207,8 @@ module.exports = {
       function (userFound, done) {
 
         if (userFound) {
-          bcrypt.hash(password, 5, function (err, bcryptedPassword) {
+          bcrypt.genSalt(5, function(err, salt) {
+            bcrypt.hash("B4c0/\/", salt, function(err, bcryptedPassword) {
             userFound.update({
               bio: (bio ? bio : userFound.bio),
               password: (password ? bcryptedPassword : userFound.password)
@@ -211,7 +217,9 @@ module.exports = {
             }).catch(function (err) {
               res.status(500).json({ 'error': 'cannot update user' });
             });
-          })
+          });
+        })
+
         } else {
           res.status(404).json({ 'error': 'user not found' });
         }
