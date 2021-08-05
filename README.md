@@ -16,10 +16,10 @@ Pour modifier le mot de passe mysql faites la commande: mysqladmin -u -root pass
 Creer un fichier dotenv dans le dossier /backend contenant les informations suivantes :
 
 DB_NAME=database_development_groupomania
-DB_USER="*utilisateur de la base de données*"
-DB_PASS="*mot de passe de l'utilisateur*"
-TOKEN_KEY="*clé de chiffrement pour JsonWebToken*"
+DB_USER=votre DB user
+DB_PASS=votre db mot de passe
+TOKEN_KEY=votre clé de chiffrement pour JsonWebToken
 
-Pour finaliser la base de données, executez dans la racine du dossier backend : Command : "sequelize db:migrate"
+Pour finaliser la base de données, executez dans la racine du dossier backend la commande : "sequelize db:migrate"
 
 Faites un node server ou nodemon server (node requis pour cette application)
