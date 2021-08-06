@@ -33,6 +33,21 @@ sendMessage.addEventListener('click', function (event) {
     let attachment = document.querySelector(".imageUpload").files[0];
     let checkLocalStorage = JSON.parse(localStorage.getItem("username"));
 
+////Verif format gif
+    let attachment2 = document.querySelector(".imageUpload");
+    var valeur = attachment2.value
+    console.log(valeur)
+    var extension = /(\.gif)$/i;
+
+    if (!extension.exec(valeur)) {
+
+        alert('Format de fichier non valide, seulement les .gif sont acceptés');
+
+
+    } else{
+
+
+
 
 
     if (attachment !== null) {
@@ -111,7 +126,7 @@ sendMessage.addEventListener('click', function (event) {
 
 
     }
-
+    }
 
 })
 

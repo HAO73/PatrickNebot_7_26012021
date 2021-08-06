@@ -1,7 +1,8 @@
-var bcrypt = require('bcryptjs');
 var jwtUtils = require('../utils/jwt.utils');
 var models = require('../models');
-var asyncLib = require('async')
+var asyncLib = require('async');
+var CryptoJS = require("crypto-js");
+var bcrypt = require('bcryptjs');
 
 //Constants
 const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -14,17 +15,21 @@ module.exports = {
   register: function (req, res) {
 
     //Params
-    var email = req.body.email;
+    var key = CryptoJS.enc.Hex.parse(7); 
+    var iv = CryptoJS.enc.Hex.parse(7); 
+    let encryptedMail = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
     var username = req.body.username;
     var password = req.body.password;
     var bio = req.body.bio;
+    var email = req.body.email;
+    
 
-    if (email == null || username == null || password == null) {
+    if (!email || !username  || !password) {
 
       return res.status(400).json({ 'error': 'missing parameters' });
 
     }
-
+ 
 
     //pseudo lenght, regex, password
 
@@ -35,9 +40,9 @@ module.exports = {
 
     if (!EMAIL_REGEX.test(email)) {
 
-      return res.status(400).json({ 'error': 'email is not valid' })
+       return res.status(400).json({ 'error': 'email is not valid' })
 
-    }
+     }
 
     if (!PASSWORD_REGEX.test(password)) {
 
@@ -49,7 +54,7 @@ module.exports = {
       function (done) {
         models.User.findOne({
           attributes: ['email'],
-          where: { email: email }
+          where: { email: encryptedMail }
         })
           .then(function (userFound) {
             done(null, userFound);
@@ -62,7 +67,7 @@ module.exports = {
         if (!userFound) {
 
             bcrypt.genSalt(5, function(err, salt) {
-            bcrypt.hash("B4c0/\/", salt, function(err, bcryptedPassword) {
+            bcrypt.hash(password, salt, function(err, bcryptedPassword) {
               done(null, userFound, bcryptedPassword);
             });
           });
@@ -72,7 +77,7 @@ module.exports = {
       },
       function (userFound, bcryptedPassword, done) {
         var newUser = models.User.create({
-          email: email,
+          email:encryptedMail,
           username: username,
           password: bcryptedPassword,
           bio: bio,
@@ -99,17 +104,23 @@ module.exports = {
   login: function (req, res) {
 
     // Params
-    var email = req.body.email;
-    var password = req.body.password;
+    
+    let password = req.body.password;
+    let email = req.body.email;
+    var key = CryptoJS.enc.Hex.parse(7); 
+    var iv = CryptoJS.enc.Hex.parse(7); 
+     let encryptedMail = CryptoJS.AES.encrypt(req.body.email, key, { iv: iv }).toString();
 
-    if (email == null || password == null) {
+    
+
+    if (!email || !password ) {
       return res.status(400).json({ 'error': 'missing parameters' });
-    }
+    } 
 
     asyncLib.waterfall([
       function (done) {
         models.User.findOne({
-          where: { email: email }
+          where: { email: encryptedMail }
         })
           .then(function (userFound) {
             done(null, userFound);
@@ -121,7 +132,7 @@ module.exports = {
       function (userFound, done) {
         if (userFound) {
 
-          bcrypt.compare("B4c0/\/", userFound.password, function(errBycrypt, resBycrypt) {
+          bcrypt.compare(password, userFound.password, function(errBycrypt, resBycrypt) {
             done(null, userFound, resBycrypt);
           
           });
@@ -136,6 +147,7 @@ module.exports = {
           return res.status(403).json({ 'error': 'invalid password' });
         }
       }
+    
     ], function (userFound) {
       if (userFound) {
         return res.status(201).json({

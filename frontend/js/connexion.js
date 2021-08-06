@@ -7,6 +7,8 @@ formLogin.addEventListener('click', function (event) {
   let email = document.getElementById("email").value;
   let password = document.getElementById("password").value;
 
+ 
+
   let connectionData = {
 
     email: email,
@@ -29,17 +31,24 @@ formLogin.addEventListener('click', function (event) {
   fetch("http://localhost:8080/api/users/login", login)
 
     .then(function (response) {
-      if (response.ok) {
+       if (response.ok) {
         window.location.href = "forum.html"
-      }
+        
+       } else {
+
+        throw new Error("Erreur de connection");
+
+       }
+       
+      
 
       return response.json();
 
     })
     .then(response => {
-      alert(JSON.stringify(response))
+      
       localStorage.setItem("username", JSON.stringify(response))
-
+     
 
 
     })

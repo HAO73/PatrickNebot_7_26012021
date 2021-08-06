@@ -54,6 +54,14 @@ nav .mainMenu .closeMenu , .icons i {
     height:auto;
 }
 
+
+.postMessage{
+
+text-align: center;
+
+}
+
+
 .postMessage2 {
 
     text-align: center;
@@ -103,6 +111,7 @@ nav .mainMenu .closeMenu , .icons i {
     font-size: 2rem;
     font-weight: bold;
     background-color: white;
+    margin: 1rem;
 }
 
 .sendMessage:hover{
@@ -111,15 +120,44 @@ nav .mainMenu .closeMenu , .icons i {
 
 }
 
+.postbar{
+
+    display: flex;
+    justify-content: center;
+
+}
+
+
+
+.imageUploadLabel{
+
+    background-color:white;
+    display:flex;
+    align-items: center;
+    flex-direction: column;
+    color: grey;
+    border: 10px solid #091F43;
+    box-shadow: 0 0 16px #091F43;
+    border-radius:16px;
+    margin: 1rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    
+}
+
+
 .imageUpload{
 
-    color:transparent;
-    background-color:#bfbfbf;
+    color:black;
+    background-color:white;
     height:3rem;
     border-radius:16px;
     font-size: 2rem;
     font-weight: bold;
     margin: 1rem;
+    
+    
+    
     
 
 }
@@ -154,7 +192,7 @@ nav .mainMenu .closeMenu , .icons i {
 
     font-weight: bold;
     font-size: 2.5rem;
-    color:#FD2D01
+    color:#FD2D01;
 
 }
 
@@ -266,10 +304,9 @@ width: 100%;
 .commentUsername {
 
     background-color:#091f43;
-    width: 8rem;
-    
+    width: 8rem;    
     border-radius:16px;
-    color: #FD2D01;
+    color: #FD2D01;;
     font-weight: bold;
     height:100%;
     margin: 0;
@@ -357,15 +394,6 @@ border-radius:0 16px 16px 0 ;
 
 
     
-}
-
-
-#formButton{
-
-    display: flex;
-    
-
-
 }
 
 .sendMessage{

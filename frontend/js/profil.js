@@ -72,7 +72,7 @@ fetch("http://localhost:8080/api/users/me", getProfil)
      <label>Update Bio:</label><br>
      <textarea id="bio" type="text"></textarea><br>
      <label>Update Password:</label><br>
-     <input id="password" type="text"></textarea><br>
+     <input id="password" type="password"></textarea><br>
      <button class="updateProfil">Enregistrer</button><br>
      </form>
     `
